@@ -45,13 +45,23 @@
     mode: 0644
   become_user: '{{ user }}'
 
-- name: Start supervisord
-  command: supervisord -c "{{ working_dir }}/{{ inventory_hostname }}.conf"
-  become_user: '{{ user }}'
-# - name: Start upstart script 
-#   service:
-#     name: "{{ inventory_hostname }}"
-#     state: started
+# - name: Start supervisord
+#   command: supervisord -c "{{ working_dir }}/{{ inventory_hostname }}.conf"
+#   become_user: '{{ user }}'
+
+- name: copy  upstart script to init 
+  template:
+    src: "supervisor_upstart.conf.j2"
+    dest: "/etc/init/{{ inventory_hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  register: script_copied
+
+- name: Start upstart script 
+  service:
+    name: "{{ inventory_hostname }}"
+    state: started
 
 - name: Check the status of the app 
   uri:
