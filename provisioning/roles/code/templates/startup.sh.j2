@@ -1,0 +1,5 @@
+#! /bin/sh
+DAEMON=/usr/local/bin/gunicorn
+DAEMON_OPTS=" --bind 0.0.0.0:5000 app:app --workers=`nproc` --pid /tmp/gunicorn.pid $DAEMON_OPTS"
+$DAEMON $DAEMON_OPTS
+

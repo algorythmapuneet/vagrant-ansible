@@ -45,9 +45,14 @@
     mode: 0644
   become_user: '{{ user }}'
 
-# - name: Start supervisord
-#   command: supervisord -c "{{ working_dir }}/{{ inventory_hostname }}.conf"
-#   become_user: '{{ user }}'
+- name: Setup startup  script
+  template:
+    src: startup.sh.j2
+    dest: "{{ working_dir }}/startup.sh"
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: a+x
+  become_user: '{{ user }}'
 
 - name: copy  upstart script to init 
   template:
@@ -62,6 +67,7 @@
   service:
     name: "{{ inventory_hostname }}"
     state: started
+  register: process_started
 
 - name: Check the status of the app 
   uri:
@@ -69,4 +75,5 @@
     status_code: 200
     timeout: 300
   async: 300
-  poll: 10  
+  poll: 10
+  when: process_started.changed  

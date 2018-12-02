@@ -10,7 +10,7 @@ minprocs=200                 ; (min. avail process descriptors;default 200)
 user={{ user }}
 
 [program:gunicorn]
-command=/usr/local/bin/gunicorn --bind 0.0.0.0:5000 app:app --pid /tmp/gunicorn.pid ;
-directory=/webapps/devops/ ;
+command="{{ working_dir }}/startup.sh" ;
+directory={{ app_dir }} ;
 stopasgroup=true ;
 stopsignal=QUIT ;

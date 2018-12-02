@@ -1,5 +1,5 @@
 description     "rakuten"
 
 script
-    exec /usr/local/bin/supervisord -c /webapps/rakuten.conf
+    exec /usr/local/bin/supervisord -c {{ working_dir }}/{{ inventory_hostname }}.conf
 end script
