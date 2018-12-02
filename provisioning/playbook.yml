@@ -1,0 +1,11 @@
+---
+- hosts: rakuten
+  gather_facts: no
+    
+  roles:
+    - pre-setup
+    - code
+    - nginx
+    
+    
+    

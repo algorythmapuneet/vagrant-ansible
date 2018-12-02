@@ -1,0 +1,55 @@
+---
+# tasks file for code deploy
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install git
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - ntp
+
+- name: Install pip
+  apt: name=python-pip state=present
+
+- name: Install pip packages
+  pip: name={{ item }} state=present
+  with_items:
+    - Flask
+    - jsonify
+    - requests
+    - Flask-Dance
+    - gunicorn
+    - supervisor
+
+- name: Create dir 
+  file: 
+    path: /webapps
+    state: directory 
+    owner: vagrant
+    group: vagrant
+
+- name: Clone the repo
+  git:
+    repo: 'https://bitbucket.org/azneita/devops-challenge.git'
+    dest: /webapps/devops
+
+- name: Setup supervisor  script
+  template:
+    src: supervisord.conf.j2
+    dest: "/webapps/{{ inventory_hostname }}.conf"
+    owner: vagrant
+    group: vagrant
+    mode: 0644
+
+- name: Start supervisord
+  command: supervisord -c "/webapps/{{ inventory_hostname }}.conf"
+# - name: Start upstart script 
+#   service:
+#     name: "{{ inventory_hostname }}"
+#     state: started
+
+- name: Test the app running status
+  uri:
+    url: http://127.0.0.1:5000
+    return_content: yes
