@@ -1,3 +1,4 @@
 user: '{{ user }}'
 working_dir: '{{ working_dir }}'
 app_dir: '{{ working_dir }}/devops'
+app_log_dir: '/var/log/{{ inventory_hostname }}'

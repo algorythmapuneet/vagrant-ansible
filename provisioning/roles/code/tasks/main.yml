@@ -29,6 +29,13 @@
     owner: '{{ user }}'
     group: '{{ user }}'
 
+- name: Create log dir 
+  file: 
+    path: '{{ app_log_dir }}'
+    state: directory 
+    owner: '{{ user }}'
+    group: '{{ user }}'
+
 - name: Clone the repo
   git:
     repo: 'https://bitbucket.org/azneita/devops-challenge.git'
