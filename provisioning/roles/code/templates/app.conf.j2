@@ -1,5 +1,0 @@
-env APP_HOME=/webapps/devops
-script
-    chdir $APP_HOME
-    exec gunicorn --bind 0.0.0.0:5000 app:app --workers `nproc`
-end script

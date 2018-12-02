@@ -1,6 +1,10 @@
 ---
 - hosts: rakuten
   gather_facts: no
+
+  vars:
+    - user: 'vagrant'
+    - working_dir: '/webapps'
     
   roles:
     - pre-setup

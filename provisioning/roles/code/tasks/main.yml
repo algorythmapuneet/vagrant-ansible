@@ -24,36 +24,39 @@
 
 - name: Create dir 
   file: 
-    path: /webapps
+    path: '{{ working_dir }}'
     state: directory 
-    owner: vagrant
-    group: vagrant
+    owner: '{{ user }}'
+    group: '{{ user }}'
 
 - name: Clone the repo
   git:
     repo: 'https://bitbucket.org/azneita/devops-challenge.git'
-    dest: /webapps/devops
-  become_user: vagrant
+    dest: '{{ app_dir }}'
+  become_user: '{{ user }}'
 
 
 - name: Setup supervisor  script
   template:
     src: supervisord.conf.j2
-    dest: "/webapps/{{ inventory_hostname }}.conf"
-    owner: vagrant
-    group: vagrant
+    dest: "{{ working_dir }}/{{ inventory_hostname }}.conf"
+    owner: '{{ user }}'
+    group: '{{ user }}'
     mode: 0644
-  become_user: vagrant
+  become_user: '{{ user }}'
 
 - name: Start supervisord
-  command: supervisord -c "/webapps/{{ inventory_hostname }}.conf"
-  become_user: vagrant
+  command: supervisord -c "{{ working_dir }}/{{ inventory_hostname }}.conf"
+  become_user: '{{ user }}'
 # - name: Start upstart script 
 #   service:
 #     name: "{{ inventory_hostname }}"
 #     state: started
 
-- name: Test the app running status
+- name: Check the status of the app 
   uri:
     url: http://127.0.0.1:5000
-    return_content: yes
+    status_code: 200
+    timeout: 300
+  async: 300
+  poll: 10  

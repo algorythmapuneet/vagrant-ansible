@@ -1,0 +1,3 @@
+user: '{{ user }}'
+working_dir: '{{ working_dir }}'
+app_dir: '{{ working_dir }}/devops'
