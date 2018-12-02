@@ -1,0 +1,11 @@
+logrotate_conf_dir: "/etc/logrotate.d/"
+logrotate_scripts:
+      - name: "{{ inventory_hostname }}"
+        path: /var/log/{{ inventory_hostname }}/*.log
+        options:
+          - daily
+          - rotate 7
+          - missingok
+          - compress
+          - delaycompress
+          - copytruncate
