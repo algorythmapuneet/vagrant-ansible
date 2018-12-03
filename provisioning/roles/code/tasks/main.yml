@@ -10,12 +10,10 @@
     - git
     - ntp
 
-
-
-# - name: Wait 300 seconds for target connection to become reachable/usable
-#   wait_for_connection:
-#         delay: 60
-#         timeout: 300
+- name: Add the user 'cody' as  'developers' to the user's groups
+  user:
+    name: '{{ user }}'
+    shell: /bin/bash
 
 - name: Install pip packages
   pip: name={{ item }} state=present
