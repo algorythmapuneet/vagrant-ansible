@@ -1,5 +1,5 @@
 #! /bin/sh
 DAEMON=/usr/local/bin/gunicorn
-DAEMON_OPTS=" --bind 0.0.0.0:5000 app:app --workers=`nproc` --log-level info {{ app_log_dir }}/application-access.log --error-logfile {{ app_log_dir }}/application-error.log --pid {{ working_dir }}/gunicorn.pid $DAEMON_OPTS"
+DAEMON_OPTS=" --bind 0.0.0.0:5000 app:app --workers=`nproc` --log-level info --access-logfile {{ app_log_dir }}/application-access.log --error-logfile {{ app_log_dir }}/application-error.log --pid {{ working_dir }}/gunicorn.pid $DAEMON_OPTS"
 $DAEMON $DAEMON_OPTS
 

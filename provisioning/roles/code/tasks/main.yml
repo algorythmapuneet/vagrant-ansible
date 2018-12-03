@@ -3,14 +3,19 @@
 - name: Update apt cache
   apt: update_cache=yes
 
-- name: Install git
+- name: Install system packages
   apt: name={{ item }} state=present
   with_items:
+    - python-pip
     - git
     - ntp
 
-- name: Install pip
-  apt: name=python-pip state=present
+
+
+# - name: Wait 300 seconds for target connection to become reachable/usable
+#   wait_for_connection:
+#         delay: 60
+#         timeout: 300
 
 - name: Install pip packages
   pip: name={{ item }} state=present
@@ -76,11 +81,16 @@
     state: started
   register: process_started
 
+- name: Wait for port
+  wait_for:
+     port: 5000
+     delay: 10
+
 - name: Check the status of the app 
   uri:
     url: http://127.0.0.1:5000
     status_code: 200
-    timeout: 300
+    timeout: 500
   async: 300
   poll: 10
-  when: process_started.changed  
+  #when: process_started.changed  
